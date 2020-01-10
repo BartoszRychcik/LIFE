@@ -1,0 +1,110 @@
+﻿<Window x:Class="Projekt1.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Projekt1"
+        mc:Ignorable="d"
+        Title="Gra w Życie" Height="545" Width="840.833"
+        WindowStartupLocation="Manual"
+        Left="300" Top="150">
+
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="BorderBrush" Value="Black" />
+            <Setter Property="Padding" Value="2" />
+            <Setter Property="Width" Value="140"/>
+            <Setter Property="Height" Value="28"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border x:Name="Border" Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <EventTrigger RoutedEvent="Button.MouseEnter">
+                                <EventTrigger.Actions>
+                                    <BeginStoryboard>
+                                        <Storyboard TargetProperty="Width">
+                                            <DoubleAnimation Duration="0:0:0.5" From="140" To="145" AutoReverse="True"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger.Actions>
+                            </EventTrigger>
+                            <EventTrigger RoutedEvent="Button.MouseEnter">
+                                <EventTrigger.Actions>
+                                    <BeginStoryboard>
+                                        <Storyboard TargetProperty="Height">
+                                            <DoubleAnimation Duration="0:0:0.5" From="26" To="31" AutoReverse="True"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger.Actions>
+                            </EventTrigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="LightGreen" TargetName="Border" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="TextBox">
+            <Setter Property="Width" Value="140"/>
+            <Setter Property="Height" Value="24"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+        </Style>
+
+        <Style TargetType="TextBlock">
+            <Setter Property="Width" Value="140"/>
+            <Setter Property="Height" Value="38"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="Foreground" Value="Black"></Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Foreground" Value="Green" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+
+    <Window.CommandBindings>
+        <CommandBinding Command="ApplicationCommands.Open" Executed="Open_Executed" CanExecute="Open_CanExecute" />
+        <CommandBinding Command="ApplicationCommands.Save" Executed="Save_Executed" CanExecute="Save_CanExecute" />
+    </Window.CommandBindings>
+
+    <Grid Margin="10,10,10,10">
+        <Grid x:Name="plansza" HorizontalAlignment="Left" Width="630" Margin="10,10,0,10"/>
+
+        <TextBlock Margin="662,12,0,0" TextWrapping="Wrap" Text="Min liczba sąsiadów powodująca śmierć:"/>
+        <TextBlock Margin="662,84,0,0" TextWrapping="Wrap" Text="Liczba sąsiadów powodująca narodziny:"/>
+        <TextBlock Margin="661,154,0,0" TextWrapping="Wrap" Text="Czas życia komórki:"/>
+        <TextBlock x:Name="info" Grid.Column="1" Margin="43,222,0,0" Text="" Cursor="None" FontWeight="Bold" Foreground="Red"/>
+
+        <TextBox x:Name="Text_death" Margin="661,50,0,0" Text="4" KeyDown="TextChanged"/>
+        <TextBox x:Name="Text_alive" Margin="662,120,0,0" Text="3" KeyDown="TextChanged"/>
+        <TextBox x:Name="Text_maxage" Margin="662,174,0,0" Text="0" KeyDown="TextChanged"/>
+
+        <Button x:Name="Menu_button" Content="Menu" Margin="663,456,0,0" Click="Button_Click_Menu"/>
+        <Button Content="Zapisz" Margin="663,344,0,0" Command="ApplicationCommands.Save"/>
+        <Button Content="Wczytaj" Margin="662,312,0,0" Command="ApplicationCommands.Open"/>
+        <Button x:Name="Next_Button" Content="Następna tura" Margin="661,248,0,0" Click="Button_Click_Next"/>
+        <Button x:Name="Next10_Button" Content="10 ruchów" Margin="662,280,0,0" Click="Button_Click_Next10"/>
+        <Button Content="Wyczyść" Margin="663,376,0,0" Click="Button_Click_Clear"/>
+
+        <ComboBox x:Name="combobox" HorizontalAlignment="Left" Margin="662,210,0,0" VerticalAlignment="Top" Height="28" Width="140" Loaded="Combobox_Loaded" SelectionChanged="Combobox_SelectionChanged">
+            <ComboBoxItem Content="Pokaż wszystko"/>
+            <ComboBoxItem Content="Pokaż nowe"/>
+            <ComboBoxItem Content="Pokaż zagrożone"/>
+        </ComboBox>
+        
+        <ListBox x:Name="listbox1" HorizontalAlignment="Left" Height="42" Margin="661,409,0,0" VerticalAlignment="Top" Width="140" ItemsSource = "{Binding}" SelectionChanged="Listbox1_SelectionChanged" KeyDown="Listbox1_KeyDown" />
+
+    </Grid>
+</Window>
